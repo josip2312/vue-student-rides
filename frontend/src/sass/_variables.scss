@@ -1,0 +1,91 @@
+:root {
+    --primary-100: #f0f4f8;
+    --primary-200: #d9e2ec;
+    --primary-300: #bcccdc;
+    --primary-400: #9fb3c8;
+    --primary-500: #829ab1;
+    --primary-600: #627d98;
+    --primary-700: #486581;
+    --primary-800: #334e68;
+    --primary-900: #243b53;
+    --primary-1000: #102a43;
+
+    --accent: #243b53;
+
+    --secondary-100: #f0f4f8;
+    --secondary-200: #bcccdc;
+    --secondary-300: #829ab1;
+    --secondary-400: #627d98;
+    --secondary-500: #486581;
+    --secondary-600: #334e68;
+    --secondary-700: #243b53;
+    --secondary-800: #102a43;
+
+    --support-blue-700: #035388;
+    --support-blue-600: #0b69a3;
+    --support-blue-500: #127fbf;
+    --support-blue-400: #1992d4;
+    --support-blue-300: #2bb0ed;
+    --support-blue-200: #40c3f7;
+
+    --support-teal-600: #044e54;
+    --support-teal-500: #0a6c74;
+    --support-teal-400: #0e7c86;
+    --support-teal-300: #14919b;
+    --support-teal-200: #2cb1bc;
+    --support-teal-100: #38bec9;
+
+    --error: #ffbdbd;
+    --warning: #fce588;
+    --success: #8eedc7;
+
+    --main-gradient: linear-gradient(
+        to right,
+        hsl(209, 40%, 28%) 45%,
+        hsl(209, 30%, 35%) 75%
+    );
+
+    --white: #ffffff;
+    --font-primary: #243b53;
+    --font-paragraph: #35526d;
+    --font-secondary: #f0f4f8;
+    --font-warning: #cf1124;
+
+    --line-12: 1.2;
+    --line-16: 1.6;
+
+    --br-sm: 0.5rem;
+    --br-md: 1.5rem;
+    --br-lg: 5rem;
+
+    --shadow-xs: 0 2px 5px rgba(0, 0, 0, 0.15);
+    --shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 5px 30px rgba(0, 0, 0, 0.1);
+
+    --in-out-sine: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+
+    --s-14: 1.4rem;
+    --s-18: 1.8rem;
+    --s-20: 2rem;
+    --s-24: 2.4rem;
+    --s-28: 2.8rem;
+    --s-32: 3.2rem;
+    --s-36: 3.6rem;
+    --s-40: 4rem;
+    --s-42: 4.2rem;
+    --s-48: 4.8rem;
+    --s-56: 5.6rem;
+    --s-64: 6.4rem;
+    --s-72: 7.2rem;
+}
+
+$v-4k: 125em; // 2000px
+$v-17: 105em; ////1680px
+$v-14: 85.375em; //1366px
+$v-12: 75em; //1200px
+$v-10: 62.5em; //1000px
+$v-9: 56.25em; //900px
+$v-8: 48em; // 768px
+$v-6: 35.5em; //568px
+$v-3: 23.5em; //380px

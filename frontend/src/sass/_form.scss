@@ -1,0 +1,54 @@
+.form {
+    --spacer: 2.5rem;
+    border-radius: var(--br-md);
+    box-shadow: var(--shadow-md);
+    background-color: var(--white);
+
+    padding: 5rem 5rem;
+    max-width: 50rem;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    &-group {
+        label {
+            @include label;
+
+            /* text-transform: uppercase;
+            letter-spacing: 3px;
+            display: block;
+            margin-bottom: 1rem; */
+        }
+        input {
+            @include input;
+            /* width: 100%;
+            border: none;
+            outline: none;
+            background-color: var(--primary-300);
+            border-radius: var(--br-sm);
+            padding: 1rem 2rem;
+
+            box-shadow: 0 2px 0 hsla(0, 0%, 50%, 0.1),
+                inset 0 2px 2px hsla(0, 0, 0, 0.1); */
+        }
+        .error {
+            font-size: 1.4rem;
+            margin-top: 0.25rem;
+            margin-left: 0.25rem;
+            color: var(--font-warning);
+            display: block;
+        }
+        .btn {
+            width: 100%;
+        }
+        #g-signin2 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            span {
+                font-size: 1.8rem;
+                color: var(--font-paragraph);
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+.spacing > * + * {
+    margin-top: 2.5rem;
+    margin-top: var(--spacer, 2.5rem);
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+.container {
+    width: 90%;
+    @include mq-min($v-10) {
+        width: 85%;
+    }
+    max-width: 125rem;
+    margin: 0 auto;
+}
+.route {
+    padding: 7.5rem 0;
+    @include mq-min($v-10) {
+        padding: 10rem 0;
+    }
+    min-height: 91vh;
+    background-color: var(--primary-100);
+}
+.section {
+    padding: 7.5rem 0;
+    @include mq-min($v-10) {
+        padding: 12.5rem 0;
+    }
+}

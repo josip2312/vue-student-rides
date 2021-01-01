@@ -1,0 +1,29 @@
+@mixin mq-min($min-width) {
+    @media only screen and(min-width:$min-width) {
+        @content;
+    }
+}
+@mixin mq-max($max-width) {
+    @media only screen and(max-width:$max-width) {
+        @content;
+    }
+}
+
+@mixin input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: var(--primary-300);
+    border-radius: var(--br-sm);
+    padding: 1rem 2rem;
+
+    box-shadow: 0 2px 0 hsla(0, 0%, 50%, 0.1),
+        inset 0 2px 2px hsla(0, 0, 0, 0.1);
+}
+@mixin label {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
