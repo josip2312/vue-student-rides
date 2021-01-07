@@ -2,12 +2,14 @@
     <div class="dropdown spacing" v-click-outside-dropdown="hideDropdown">
         <router-link class="item" :to="{ name: 'Rides' }">Vožnje</router-link>
         <router-link class="item" :to="{ name: 'Profile' }">Profil</router-link>
-        <button class="item">Odjavi se</button>
+        <button class="item" @click="logout">Odjavi se</button>
     </div>
 </template>
 
 <script>
 import { clickOutsideDropdown } from '@/directives/click-outside';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 export default {
     name: 'UserDropdownMenu',
     directives: {
@@ -20,7 +22,14 @@ export default {
         },
     },
     setup() {
-        return {};
+        const store = useStore();
+        const router = useRouter();
+        const logout = () => {
+            store.dispatch('logout');
+            router.push({ name: 'Home' });
+        };
+
+        return { logout };
     },
 };
 </script>
@@ -32,11 +41,12 @@ export default {
     flex-direction: column;
 
     position: absolute;
-    right: 7.5rem;
-    top: 5.5rem;
+    right: -1rem;
+    top: 5.25rem;
     z-index: 1;
-    background-color: var(--white);
 
+    padding: 0.5rem 0;
+    background-color: var(--white);
     box-shadow: var(--shadow-lg);
     border-radius: var(--br-sm);
 

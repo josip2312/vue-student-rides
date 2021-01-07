@@ -1,7 +1,9 @@
 <template>
     <section class="details route">
-        <div class="container">
+        <div class="map-container">
             <div id="map" class="map"></div>
+        </div>
+        <div class="container">
             <div class="ride spacing">
                 <h1 class="heading-2">
                     {{ formatDate(singleRide.startTime) }}
@@ -18,16 +20,34 @@
                         </div>
                     </div>
                 </div>
+                <button
+                    v-if="!isRideOwner"
+                    class="btn request"
+                    @click="
+                        requestRide({
+                            rideId: singleRide.id,
+                        })
+                    "
+                >
+                    Rezerviraj
+                </button>
                 <div class="seats">
                     <img class="icon" src="@/assets/icons/seats.svg" alt="" />
-                    <span> {{ singleRide.seats }} slobodna mjesta </span>
+                    <span> Slobodnih mjesta: {{ singleRide.seats }} </span>
                 </div>
                 <div class="price">
                     <img class="icon" src="@/assets/icons/price.svg" alt="" />
-                    <span> {{ singleRide.price }} KM </span>
+                    <span>Cijena po osobi: {{ singleRide.price }} KM </span>
                 </div>
                 <div class="passengers">
-                    Passengers
+                    <h2 class="heading-4">
+                        Putnici
+                    </h2>
+                    <RidePassengerPreview
+                        v-for="passenger in singleRide.passengers"
+                        :key="passenger.id"
+                        :passenger="passenger"
+                    />
                 </div>
                 <button
                     v-if="isRideOwner"
@@ -50,21 +70,32 @@ import mapboxgl from 'mapbox-gl';
 
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
+import { useToast } from 'vue-toastification';
 
 import { formatDate } from '@/composition/dayjs';
-
+import RidePassengerPreview from '@/components/main/RidePassengerPreview.vue';
 export default {
+    components: {
+        RidePassengerPreview,
+    },
     setup() {
         const route = useRoute();
         const router = useRouter();
         const store = useStore();
+        const toast = useToast();
 
         const { id } = route.params;
 
         store.dispatch('fetchSingleRide', id);
-
+        store.dispatch('fetchRidePassengers', id);
         const singleRide = computed(() => store.state.rides.singleRide);
+
+        const requestRide = (requestData) => {
+            store.dispatch('requestRide', requestData);
+            toast.info('Zahtjev za vožnju poslan');
+        };
+
         const isRideOwner = computed(
             () => store.getters.getUserId === singleRide.value.userId,
         );
@@ -72,10 +103,11 @@ export default {
         const deleteRide = (id) => {
             store.dispatch('deleteRide', id);
             router.push({ name: 'Profile' });
+            toast.success('Vožnja uklonjena');
         };
 
         //map related
-        onMounted(() => {
+        onMounted(async () => {
             const map = useMapbox();
             const geocoder = new MapboxGeocoder({
                 accessToken: process.env.VUE_APP_MAPBOX_ACCESS_TOKEN,
@@ -83,66 +115,77 @@ export default {
             });
 
             map.addControl(geocoder);
-
-            geocoder.query(singleRide.value.destinationCity);
-
-            geocoder.query(singleRide.value.startCity);
-
             let startCityData;
             let destCityData;
-            geocoder.on('result', ({ result }) => {
-                new mapboxgl.Marker().setLngLat(result.center).addTo(map);
+            try {
+                watch(singleRide, () => {
+                    geocoder.query(singleRide.value.destinationCity);
+                    geocoder.query(singleRide.value.startCity);
+                });
 
-                let startCityName = singleRide.value.startCity.split(',')[0];
-                let destCityName = singleRide.value.destinationCity.split(
-                    ',',
-                )[0];
+                await geocoder.on('result', ({ result }) => {
+                    new mapboxgl.Marker().setLngLat(result.center).addTo(map);
 
-                if (result.text === startCityName) {
-                    startCityData = result.center;
-                }
-                if (result.text === destCityName) {
-                    destCityData = result.center;
-                }
-            });
+                    let startCityName = singleRide.value.startCity.split(
+                        ',',
+                    )[0];
+                    let destCityName = singleRide.value.destinationCity.split(
+                        ',',
+                    )[0];
+
+                    if (result.text === startCityName) {
+                        startCityData = result.center;
+                    }
+                    if (result.text === destCityName) {
+                        destCityData = result.center;
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+            }
+
             map.on('load', () => {
-                map.addSource('route', {
-                    type: 'geojson',
-                    data: {
-                        type: 'Feature',
-                        properties: {},
-                        geometry: {
-                            type: 'LineString',
-                            coordinates: [
-                                [startCityData[0], startCityData[1]],
-                                [destCityData[0], destCityData[1]],
-                            ],
+                if (startCityData && destCityData) {
+                    map.addSource('route', {
+                        type: 'geojson',
+                        data: {
+                            type: 'Feature',
+                            properties: {},
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [
+                                    [startCityData[0], startCityData[1]],
+                                    [destCityData[0], destCityData[1]],
+                                ],
+                            },
                         },
-                    },
-                });
+                    });
 
-                map.addLayer({
-                    id: 'route',
-                    type: 'line',
+                    map.addLayer({
+                        id: 'route',
+                        type: 'line',
 
-                    source: 'route',
-                    layout: {
-                        'line-join': 'round',
-                        'line-cap': 'round',
-                    },
-                    paint: {
-                        'line-color': '#888',
-                        'line-width': 6,
-                    },
-                });
+                        source: 'route',
+                        layout: {
+                            'line-join': 'round',
+                            'line-cap': 'round',
+                        },
+                        paint: {
+                            'line-color': '#888',
+                            'line-width': 6,
+                        },
+                    });
+                }
             });
         });
 
         return {
             singleRide,
             formatDate,
+
             isRideOwner,
             deleteRide,
+            requestRide,
         };
     },
 };
@@ -213,6 +256,11 @@ export default {
         opacity: 0.9;
     }
 }
+.request {
+    width: 100%;
+    font-size: var(--s-18);
+    max-width: 50rem;
+}
 .remove {
     display: flex;
     align-items: center;
@@ -227,5 +275,9 @@ export default {
         margin-right: 1rem;
         width: 2.5rem;
     }
+}
+.passengers {
+    width: 100%;
+    max-width: 70rem;
 }
 </style>

@@ -37,6 +37,31 @@ export const clickOutsideDropdown = {
         document.body.removeEventListener('click', el.clickOutsideEvent);
     },
 };
+export const clickOutsideNotifications = {
+    mounted(el, binding) {
+        const notificationsToggle = document.querySelector(
+            '.notifications-toggle',
+        );
+        const notificationsMenu = document.querySelector('.notif-menu');
+
+        el.clickOutsideEvent = function(event) {
+            if (
+                !(el === event.target) &&
+                event.target !== notificationsToggle &&
+                !notificationsToggle.contains(event.target) &&
+                event.target !== notificationsMenu &&
+                !notificationsMenu.contains(event.target)
+            ) {
+                binding.value();
+            }
+        };
+
+        document.body.addEventListener('click', el.clickOutsideEvent);
+    },
+    unmounted(el) {
+        document.body.removeEventListener('click', el.clickOutsideEvent);
+    },
+};
 export const clickOutsideFilter = {
     mounted(el, binding) {
         const filter = document.querySelector('.filter-button');

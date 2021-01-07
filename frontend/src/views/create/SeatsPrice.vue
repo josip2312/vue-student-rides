@@ -51,11 +51,15 @@
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+
+import { useToast } from 'vue-toastification';
+
 export default {
     name: 'SeatsPrice',
     setup() {
         const router = useRouter();
         const store = useStore();
+        const toast = useToast();
 
         const seats = ref(1);
         const price = ref(5);
@@ -66,6 +70,7 @@ export default {
 
             store.dispatch('createRide');
             router.push({ name: 'Profile' });
+            toast.success('Vožnja stvorena');
         };
 
         return { seats, price, createRide };

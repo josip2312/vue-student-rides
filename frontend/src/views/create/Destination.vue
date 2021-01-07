@@ -1,6 +1,6 @@
 <template>
     <section class="destination route">
-        <div class="container">
+        <div class="map-container">
             <h2 class="heading-2">
                 Destinacija
             </h2>
@@ -47,13 +47,14 @@ export default {
             geocoder.on('result', ({ result }) => {
                 const place = result.text;
                 const country = result.context[1].text;
-                isLoading.value = true;
                 store.state.rides.creatingRide.destinationCity = `${place}, ${country}`;
-                console.log(store.state.rides.creatingRide);
                 setTimeout(() => {
-                    isLoading.value = false;
-                    router.push({ name: 'StartDate' });
-                }, 1500);
+                    isLoading.value = true;
+                    setTimeout(() => {
+                        isLoading.value = false;
+                        router.push({ name: 'StartDate' });
+                    }, 1500);
+                }, 750);
             });
         });
         return { isLoading };

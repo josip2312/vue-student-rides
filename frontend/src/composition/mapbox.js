@@ -6,7 +6,7 @@ export default function useMapbox() {
     const map = new mapboxgl.Map({
         container: 'map',
         center: [17.81, 43.34],
-        zoom: 9,
+        zoom: 7,
         style: 'mapbox://styles/mapbox/streets-v11',
     });
 

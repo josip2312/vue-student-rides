@@ -56,6 +56,10 @@ export default {
 
     padding-bottom: 8.5rem;
     cursor: pointer;
+    @include mq-min($v-6) {
+        padding-bottom: 3.5rem;
+    }
+
     &::after {
         content: '';
         position: absolute;
@@ -70,9 +74,7 @@ export default {
     &:hover::after {
         opacity: 1;
     }
-    @include mq-min($v-6) {
-        padding-bottom: 3.5rem;
-    }
+
     .path {
         height: 12.5rem;
         flex: 0.75;

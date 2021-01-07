@@ -8,7 +8,8 @@ import store from '@/store';
 axios.defaults.baseURL = process.env.VUE_APP_BACKEND_URL;
 
 axios.interceptors.request.use(function(config) {
-    store.state.loading = true;
+    store.state.error = null;
+    store.state.isLoading = true;
 
     const token = store.getters.getJWT;
     config.headers.Authorization = token ? `Bearer ${token}` : '';
@@ -18,7 +19,7 @@ axios.interceptors.request.use(function(config) {
 
 axios.interceptors.response.use(
     function(response) {
-        store.state.loading = false;
+        store.state.isLoading = false;
 
         /*  if (response.data.message) {
             store.commit('SUCCESS', response.data.message);
@@ -30,8 +31,8 @@ axios.interceptors.response.use(
         return response;
     },
     function(error) {
-        store.state.loading = false;
-
+        store.state.isLoading = false;
+        store.state.error = error.response.data;
         /* if (error.response) {
             if (
                 error.response.data.message === 'jwt expired' ||

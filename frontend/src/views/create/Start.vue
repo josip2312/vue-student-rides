@@ -1,8 +1,8 @@
 <template>
     <section class="start route">
-        <div class="container">
+        <div class="map-container">
             <h2 class="heading-2">
-                Pronađi mjesto polaska
+                Mjesto polaska
             </h2>
             <div id="map" class="map"></div>
         </div>
@@ -47,11 +47,14 @@ export default {
                 const place = result.text;
                 const country = result.context[1].text;
                 store.state.rides.creatingRide.startCity = `${place}, ${country}`;
-                isLoading.value = true;
+
                 setTimeout(() => {
-                    isLoading.value = false;
-                    router.push({ name: 'Destination' });
-                }, 1500);
+                    isLoading.value = true;
+                    setTimeout(() => {
+                        isLoading.value = false;
+                        router.push({ name: 'Destination' });
+                    }, 1500);
+                }, 750);
             });
         });
         return { isLoading };

@@ -25,14 +25,14 @@
                 >
             </div>
             <div class="rides-container spacing">
-                <RidePreview
-                    v-for="ride in rides"
-                    :key="ride.id"
-                    :ride="ride"
-                />
-                <div v-if="rides.length < 1" class="no-rides">
-                    Nema vožnji!
-                </div>
+                <template v-if="!isLoading && error === null">
+                    <RidePreview
+                        v-for="ride in rides"
+                        :key="ride.id"
+                        :ride="ride"
+                    />
+                </template>
+                <DataLoadingHandler :length="rides.length" />
             </div>
         </div>
 
@@ -44,6 +44,7 @@
 import { useStore } from 'vuex';
 import { computed } from 'vue';
 
+import DataLoadingHandler from '@/components/main/DataLoadingHandler';
 import FilterRides from '@/components/main/FilterRides';
 import RidePreview from '@/components/main/RidePreview';
 export default {
@@ -51,6 +52,7 @@ export default {
     components: {
         RidePreview,
         FilterRides,
+        DataLoadingHandler,
     },
     setup() {
         const store = useStore();
@@ -58,6 +60,9 @@ export default {
         store.dispatch('fetchAllRides');
 
         const rides = computed(() => store.state.rides.rides);
+
+        const isLoading = computed(() => store.getters.isLoading);
+        const error = computed(() => store.getters.getError);
 
         const filterRides = (filterParameter) => {
             if (filterParameter === 'dates') {
@@ -71,7 +76,7 @@ export default {
             }
         };
 
-        return { rides, filterRides };
+        return { rides, filterRides, isLoading, error };
     },
 };
 </script>
@@ -150,9 +155,5 @@ export default {
     @include mq-min($v-10) {
         padding-top: 7.5rem;
     }
-}
-.no-rides {
-    font-size: var(--s-24);
-    opacity: 0.9;
 }
 </style>

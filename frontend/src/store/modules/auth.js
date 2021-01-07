@@ -19,14 +19,12 @@ export const auth = {
     actions: {
         async loginUser({ commit }, userData) {
             try {
-                console.log(this);
                 const { getJWT } = this.getters;
                 if (!getJWT) {
                     const { data } = await axios.post(
                         '/api/auth/login',
                         userData,
                     );
-                    console.log(data);
                     commit(SET_USER_DATA, data);
                 }
             } catch (error) {
@@ -48,6 +46,11 @@ export const auth = {
             } catch (error) {
                 console.error(error);
             }
+        },
+        logout() {
+            sessionStorage.clear();
+            localStorage.removeItem('vuex');
+            location.reload();
         },
     },
     modules: {},
