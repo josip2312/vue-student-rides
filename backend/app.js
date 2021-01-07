@@ -7,7 +7,9 @@ const cors = require('cors');
 const db = require('./models/index');
 
 const errorMiddleware = require('./middleware/errorMiddleware');
+
 const ridesRoutes = require('./routes/rides');
+const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
 
 const app = express();
@@ -20,6 +22,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/rides', ridesRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 
 app.use(morgan('dev'));

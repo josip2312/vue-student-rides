@@ -15,12 +15,10 @@ module.exports = (sequelize, DataTypes) => {
             },
             startCity: {
                 type: DataTypes.STRING,
-
                 allowNull: false,
             },
             destinationCity: {
                 type: DataTypes.STRING,
-
                 allowNull: false,
             },
 

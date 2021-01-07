@@ -19,5 +19,7 @@ db.sequelize = sequelize;
 db.Ride = require('./Ride.js')(sequelize, Sequelize);
 db.City = require('./City.js')(sequelize, Sequelize);
 db.User = require('./User.js')(sequelize, Sequelize);
+db.Request = require('./Request.js')(sequelize, Sequelize);
+db.Notification = require('./Notification.js')(sequelize, Sequelize);
 
 module.exports = db;

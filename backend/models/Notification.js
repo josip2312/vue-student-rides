@@ -1,25 +1,23 @@
 module.exports = (sequelize, DataTypes) => {
-    const Request = sequelize.define(
-        'Request',
+    const Notification = sequelize.define(
+        'Notification',
         {
-            // Model attributes are defined here
-            requesterId: {
+            senderId: {
                 type: DataTypes.INTEGER,
                 references: {
                     model: 'User',
                     key: 'id',
                 },
             },
-            rideId: {
+            receiverId: {
                 type: DataTypes.INTEGER,
                 references: {
-                    model: 'Ride',
+                    model: 'User',
                     key: 'id',
                 },
             },
-            requestStatus: {
-                type: DataTypes.BOOLEAN,
-                defaultValue: false,
+            content: {
+                type: DataTypes.STRING,
             },
         },
 
@@ -27,5 +25,5 @@ module.exports = (sequelize, DataTypes) => {
             freezeTableName: true,
         },
     );
-    return Request;
+    return Notification;
 };
